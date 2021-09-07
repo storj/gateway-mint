@@ -15,7 +15,13 @@
 #  limitations under the License.
 #
 
-./mint.sh "$@"  &
+if [ $# -eq 0 ]
+then
+    ./mint.sh aws-sdk-go aws-sdk-php awscli minio-go aws-sdk-java aws-sdk-ruby s3cmd s3select &
+    # these tests are disabled in their entirety by STORJ: healthcheck mc minio-dotnet minio-java minio-js minio-py
+else
+    ./mint.sh "$@" &
+fi
 
 # Get the pid to be used for kill command if required
 main_pid="$!"
