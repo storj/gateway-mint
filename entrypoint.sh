@@ -17,8 +17,8 @@
 
 if [ $# -eq 0 ]
 then
-    ./mint.sh aws-sdk-go aws-sdk-php awscli minio-go aws-sdk-java aws-sdk-ruby s3cmd s3select &
-    # these tests are disabled in their entirety by STORJ: healthcheck mc minio-dotnet minio-java minio-js minio-py
+    ./mint.sh aws-sdk-go aws-sdk-java aws-sdk-php aws-sdk-ruby awscli minio-go s3cmd s3select &
+    # these tests are disabled in their entirety by STORJ: healthcheck mc minio-dotnet minio-java minio-js minio-py versioning
 else
     ./mint.sh "$@" &
 fi
