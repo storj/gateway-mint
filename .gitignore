@@ -7,6 +7,7 @@ log/*
 minio.test
 bin/*
 node_modules
+volumes
 # exception to the rule
 !log/.gitkeep
 !bin/.gitkeep
