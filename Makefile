@@ -36,9 +36,12 @@ ci-image-build:
 
 .PHONY: ci-image-run
 ci-image-run:
+	# Fetch authservice tls cert for use by uplink-cli
+	docker exec gateway-mint-sim-$$BUILD_NUMBER \
+		bash -c "echo -n | openssl s_client -connect authservice:7777 | openssl x509 > authservice-cert.pem"
 	# Every Makefile rule is run in its shell, so we need to couple these two so
 	# exported credentials are visible to the `docker run ...` command.
-	export $$(docker exec gateway-mint-sim-$$BUILD_NUMBER uplink access register --access $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS) --auth-service http://authservice:8000 --format env); \
+	export $$(docker exec gateway-mint-sim-$$BUILD_NUMBER uplink access register --access $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS) --auth-service authservice:7777 --format env); \
 	docker run \
 	--network gateway-mint-network-$$BUILD_NUMBER \
 	-e "SERVER_ENDPOINT=gateway:7777" -e "ACCESS_KEY=$$AWS_ACCESS_KEY_ID" -e "SECRET_KEY=$$AWS_SECRET_ACCESS_KEY" -e "ENABLE_HTTPS=0" \
@@ -83,10 +86,25 @@ ci-dependencies-start:
 		echo "*** storj-sim is not yet available; waiting for 3s..." && sleep 3; \
 	done
 
+	mkdir -p volumes/authservice
+
+	# create certificate
+	openssl req \
+		-x509 \
+		-newkey rsa:4096 \
+		-keyout volumes/authservice/authservice-key.pem \
+		-out volumes/authservice/authservice-cert.pem \
+		-nodes \
+		-subj '/CN=authservice' \
+		-addext "subjectAltName = DNS:authservice"
+
 	docker run \
 	--network gateway-mint-network-$$BUILD_NUMBER --network-alias authservice \
 	--name gateway-mint-authservice-$$BUILD_NUMBER \
+	--volume=$$PWD/volumes/authservice:/cert:ro \
 	--rm -d storjlabs/authservice:dev run \
+		--cert-file /cert/authservice-cert.pem \
+    	--key-file /cert/authservice-key.pem \
 		--allowed-satellites $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_ID)@ \
 		--auth-token super-secret \
 		--endpoint http://gateway:7777 \
@@ -114,6 +132,7 @@ ci-dependencies-clean:
 	-docker rmi golang:latest
 	-docker rmi redis:latest
 	-docker rmi postgres:latest
+	-rm -r volumes
 
 .PHONY: ci-run
 ci-run: ci-image-build ci-network-create ci-dependencies-start ci-image-run
