@@ -16,3 +16,5 @@ volumes
 run/core/minio-dotnet/bin/*
 run/core/minio-dotnet/obj/*
 run/core/minio-dotnet/out/*
+run/core/minio-go/main.go
+run/core/healthcheck/healthcheck

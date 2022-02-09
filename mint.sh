@@ -22,7 +22,6 @@ SERVER_REGION=${SERVER_REGION:-us-east-1}
 ENABLE_HTTPS=${ENABLE_HTTPS:-0}
 ENABLE_VIRTUAL_STYLE=${ENABLE_VIRTUAL_STYLE:-0}
 RUN_ON_FAIL=${RUN_ON_FAIL:-0}
-GO111MODULE=on
 
 if [ -z "$SERVER_ENDPOINT" ]; then
     SERVER_ENDPOINT="play.minio.io:9000"
@@ -35,7 +34,7 @@ if [ "$ENABLE_VIRTUAL_STYLE" -eq 1 ]; then
         SERVER_IP="${SERVER_ENDPOINT%%:*}"
         SERVER_PORT="${SERVER_ENDPOINT/*:/}"
         # Check if SERVER_IP is actually IPv4 address
-        octets=("${SERVER_IP//./ }")
+        IFS=. read -ra octets <<< "$SERVER_IP"
         if [ "${#octets[@]}" -ne 4 ]; then
             echo "$SERVER_IP must be an IP address"
             exit 1
@@ -138,7 +137,6 @@ function main()
     export SERVER_REGION
     export ENABLE_VIRTUAL_STYLE
     export RUN_ON_FAIL
-    export GO111MODULE
 
     echo "Running with"
     echo "SERVER_ENDPOINT:      $SERVER_ENDPOINT"
