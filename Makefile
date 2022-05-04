@@ -81,7 +81,6 @@ ci-dependencies-start:
 		--auth.token super-secret \
 		--domain-name gateway \
 		--insecure-log-all \
-		--s3compatibility.disable-copy-object=false \
 		--s3compatibility.fully-compatible-listing
 
 .PHONY: ci-dependencies-stop
