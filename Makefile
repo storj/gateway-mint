@@ -85,11 +85,7 @@ ci-dependencies-start:
 
 .PHONY: ci-dependencies-stop
 ci-dependencies-stop:
-	-docker stop gateway-mint-gateway-$$BUILD_NUMBER
-	-docker stop gateway-mint-authservice-$$BUILD_NUMBER
-	-docker stop gateway-mint-sim-$$BUILD_NUMBER
-	-docker stop gateway-mint-redis-$$BUILD_NUMBER
-	-docker stop gateway-mint-postgres-$$BUILD_NUMBER
+	-docker stop --time=1 $$(docker ps -qf network=gateway-mint-network-$$BUILD_NUMBER)
 
 .PHONY: ci-dependencies-clean
 ci-dependencies-clean:
