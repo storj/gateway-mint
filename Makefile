@@ -60,7 +60,7 @@ ci-dependencies-start:
 
 	# We need to block until storj-sim finishes its build and launches;
 	# otherwise, we would pass an invalid satellite ID/address to authservice.
-	until docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_ID > /dev/null; do \
+	until docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_URL > /dev/null; do \
 		echo "*** storj-sim is not yet available; waiting for 3s..." && sleep 3; \
 	done
 
@@ -68,7 +68,7 @@ ci-dependencies-start:
 	--network gateway-mint-network-$$BUILD_NUMBER --network-alias authservice \
 	--name gateway-mint-authservice-$$BUILD_NUMBER \
 	--rm -d storjlabs/authservice:dev run \
-		--allowed-satellites $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_ID)@ \
+		--allowed-satellites $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_URL) \
 		--auth-token super-secret \
 		--endpoint http://gateway:20010 \
 		--kv-backend memory://
