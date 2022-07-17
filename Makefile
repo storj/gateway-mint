@@ -19,7 +19,7 @@ ci-image-build:
 ci-image-run:
 	# Every Makefile rule is run in its shell, so we need to couple these two so
 	# exported credentials are visible to the `docker run ...` command.
-	export $$(docker run --network gateway-mint-network-$$BUILD_NUMBER --rm storjlabs/authservice:dev register --address drpc://authservice:20002 --format-env $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS)); \
+	export $$(docker run --network gateway-mint-network-$$BUILD_NUMBER --rm storjlabs/authservice:dev register --address drpc://authservice:20002 --format-env $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS)) && \
 	docker run \
 	--network gateway-mint-network-$$BUILD_NUMBER \
 	-e "SERVER_ENDPOINT=gateway:20010" -e "ACCESS_KEY=$$AWS_ACCESS_KEY_ID" -e "SECRET_KEY=$$AWS_SECRET_ACCESS_KEY" -e "ENABLE_HTTPS=0" \
