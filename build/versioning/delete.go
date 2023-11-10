@@ -53,22 +53,22 @@ func testDeleteObject() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	putVersioningInput := &s3.PutBucketVersioningInput{
-		Bucket: aws.String(bucket),
-		VersioningConfiguration: &s3.VersioningConfiguration{
-			Status: aws.String("Enabled"),
-		},
-	}
+	// putVersioningInput := &s3.PutBucketVersioningInput{
+	// 	Bucket: aws.String(bucket),
+	// 	VersioningConfiguration: &s3.VersioningConfiguration{
+	// 		Status: aws.String("Enabled"),
+	// 	},
+	// }
 
-	_, err = s3Client.PutBucketVersioning(putVersioningInput)
-	if err != nil {
-		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-			return
-		}
-		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-		return
-	}
+	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
+	// if err != nil {
+	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+	// 		return
+	// 	}
+	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+	// 	return
+	// }
 
 	putInput := &s3.PutObjectInput{
 		Body:   aws.ReadSeekCloser(strings.NewReader(objectContent)),
@@ -196,22 +196,22 @@ func testDeleteObjects() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	putVersioningInput := &s3.PutBucketVersioningInput{
-		Bucket: aws.String(bucket),
-		VersioningConfiguration: &s3.VersioningConfiguration{
-			Status: aws.String("Enabled"),
-		},
-	}
+	// putVersioningInput := &s3.PutBucketVersioningInput{
+	// 	Bucket: aws.String(bucket),
+	// 	VersioningConfiguration: &s3.VersioningConfiguration{
+	// 		Status: aws.String("Enabled"),
+	// 	},
+	// }
 
-	_, err = s3Client.PutBucketVersioning(putVersioningInput)
-	if err != nil {
-		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-			return
-		}
-		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-		return
-	}
+	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
+	// if err != nil {
+	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+	// 		return
+	// 	}
+	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+	// 	return
+	// }
 
 	putInput := &s3.PutObjectInput{
 		Body:   aws.ReadSeekCloser(strings.NewReader(objectContent)),

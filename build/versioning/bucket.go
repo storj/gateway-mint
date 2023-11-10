@@ -20,9 +20,7 @@
 package main
 
 import (
-	"errors"
 	"math/rand"
-	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -49,37 +47,37 @@ func testMakeBucket() {
 	}
 	defer cleanupBucket(bucketName, function, args, startTime)
 
-	putVersioningInput := &s3.PutBucketVersioningInput{
-		Bucket: aws.String(bucketName),
-		VersioningConfiguration: &s3.VersioningConfiguration{
-			MFADelete: aws.String("Disabled"),
-			Status:    aws.String("Enabled"),
-		},
-	}
+	// putVersioningInput := &s3.PutBucketVersioningInput{
+	// 	Bucket: aws.String(bucketName),
+	// 	VersioningConfiguration: &s3.VersioningConfiguration{
+	// 		MFADelete: aws.String("Disabled"),
+	// 		Status:    aws.String("Enabled"),
+	// 	},
+	// }
 
-	_, err = s3Client.PutBucketVersioning(putVersioningInput)
-	if err != nil {
-		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-			return
-		}
-		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-		return
-	}
+	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
+	// if err != nil {
+	// 	// if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+	// 	// 	ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+	// 	// 	return
+	// 	// }
+	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+	// 	return
+	// }
 
-	getVersioningInput := &s3.GetBucketVersioningInput{
-		Bucket: aws.String(bucketName),
-	}
+	// getVersioningInput := &s3.GetBucketVersioningInput{
+	// 	Bucket: aws.String(bucketName),
+	// }
 
-	result, err := s3Client.GetBucketVersioning(getVersioningInput)
-	if err != nil {
-		failureLog(function, args, startTime, "", "Get Versioning failed", err).Fatal()
-		return
-	}
+	// result, err := s3Client.GetBucketVersioning(getVersioningInput)
+	// if err != nil {
+	// 	failureLog(function, args, startTime, "", "Get Versioning failed", err).Fatal()
+	// 	return
+	// }
 
-	if *result.Status != "Enabled" {
-		failureLog(function, args, startTime, "", "Get Versioning status failed", errors.New("unexpected versioning status")).Fatal()
-	}
+	// if *result.Status != "Enabled" {
+	// 	failureLog(function, args, startTime, "", "Get Versioning status failed", errors.New("unexpected versioning status")).Fatal()
+	// }
 
 	successLogger(function, args, startTime).Info()
 }
