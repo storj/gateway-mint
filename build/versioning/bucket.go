@@ -47,6 +47,7 @@ func testMakeBucket() {
 	}
 	defer cleanupBucket(bucketName, function, args, startTime)
 
+	// TODO(ver): uncomment once supported by Storj
 	// putVersioningInput := &s3.PutBucketVersioningInput{
 	// 	Bucket: aws.String(bucketName),
 	// 	VersioningConfiguration: &s3.VersioningConfiguration{
