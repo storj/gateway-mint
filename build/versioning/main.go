@@ -113,6 +113,7 @@ func main() {
 
 	testMakeBucket()
 	testPutObject()
+	// TODO(ver): uncomment once supported by Storj
 	// testPutObjectWithTaggingAndMetadata()
 	testGetObject()
 	testStatObject()
@@ -120,6 +121,7 @@ func main() {
 	testDeleteObjects()
 	testListObjectVersionsSimple()
 	testListObjectVersionsWithPrefixAndDelimiter()
+	// TODO(ver): uncomment once supported by Storj
 	// testListObjectVersionsKeysContinuation()
 	// testListObjectVersionsVersionIDContinuation()
 	// testListObjectsVersionsWithEmptyDirObject()
