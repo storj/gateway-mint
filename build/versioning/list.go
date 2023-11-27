@@ -461,6 +461,7 @@ func testListObjectVersionsKeysContinuation() {
 		{versions: []string{"testobject-5", "testobject-6", "testobject-7", "testobject-8", "testobject-9"}, nextKeyMarker: "", lastPage: true},
 	}
 
+	// TODO(ver): this check won't work because we don't have ordered listing because of encryption
 	if !reflect.DeepEqual(expectedResult, gotResult) {
 		failureLog(function, args, startTime, "", "ListObjectVersions returned unexpected listing result", fmt.Errorf("want %+v, got %+v", expectedResult, gotResult)).Fatal()
 		return
@@ -570,6 +571,7 @@ func testListObjectVersionsVersionIDContinuation() {
 		{versions: []string{"testobject", "testobject", "testobject", "testobject", "testobject"}, lastPage: true},
 	}
 
+	// TODO(ver): this check won't work because we have diffrent ordering on satellite side (from oldest to latest)
 	if !reflect.DeepEqual(expectedResult, gotResult) {
 		failureLog(function, args, startTime, "", "ListObjectVersions returned unexpected listing result", nil).Fatal()
 		return
