@@ -58,23 +58,22 @@ func testListObjectVersionsSimple() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	// TODO(ver): uncomment once supported by Storj
-	// putVersioningInput := &s3.PutBucketVersioningInput{
-	// 	Bucket: aws.String(bucket),
-	// 	VersioningConfiguration: &s3.VersioningConfiguration{
-	// 		Status: aws.String("Enabled"),
-	// 	},
-	// }
+	putVersioningInput := &s3.PutBucketVersioningInput{
+		Bucket: aws.String(bucket),
+		VersioningConfiguration: &s3.VersioningConfiguration{
+			Status: aws.String("Enabled"),
+		},
+	}
 
-	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-	// 		return
-	// 	}
-	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-	// 	return
-	// }
+	_, err = s3Client.PutBucketVersioning(putVersioningInput)
+	if err != nil {
+		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+			return
+		}
+		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+		return
+	}
 
 	for i := 0; i < 10; i++ {
 		putInput1 := &s3.PutObjectInput{
@@ -245,23 +244,22 @@ func testListObjectVersionsWithPrefixAndDelimiter() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	// TODO(ver): uncomment once supported by Storj
-	// putVersioningInput := &s3.PutBucketVersioningInput{
-	// 	Bucket: aws.String(bucket),
-	// 	VersioningConfiguration: &s3.VersioningConfiguration{
-	// 		Status: aws.String("Enabled"),
-	// 	},
-	// }
+	putVersioningInput := &s3.PutBucketVersioningInput{
+		Bucket: aws.String(bucket),
+		VersioningConfiguration: &s3.VersioningConfiguration{
+			Status: aws.String("Enabled"),
+		},
+	}
 
-	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-	// 		return
-	// 	}
-	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-	// 	return
-	// }
+	_, err = s3Client.PutBucketVersioning(putVersioningInput)
+	if err != nil {
+		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+			return
+		}
+		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+		return
+	}
 
 	for _, objectName := range []string{"dir/object", "dir/dir/object", "object"} {
 		putInput := &s3.PutObjectInput{
@@ -387,23 +385,22 @@ func testListObjectVersionsKeysContinuation() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	// TODO(ver): uncomment once supported by Storj
-	// putVersioningInput := &s3.PutBucketVersioningInput{
-	// 	Bucket: aws.String(bucket),
-	// 	VersioningConfiguration: &s3.VersioningConfiguration{
-	// 		Status: aws.String("Enabled"),
-	// 	},
-	// }
+	putVersioningInput := &s3.PutBucketVersioningInput{
+		Bucket: aws.String(bucket),
+		VersioningConfiguration: &s3.VersioningConfiguration{
+			Status: aws.String("Enabled"),
+		},
+	}
 
-	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-	// 		return
-	// 	}
-	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-	// 	return
-	// }
+	_, err = s3Client.PutBucketVersioning(putVersioningInput)
+	if err != nil {
+		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+			return
+		}
+		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+		return
+	}
 
 	for i := 0; i < 10; i++ {
 		putInput1 := &s3.PutObjectInput{
@@ -494,23 +491,22 @@ func testListObjectVersionsVersionIDContinuation() {
 	}
 	defer cleanupBucket(bucket, function, args, startTime)
 
-	// TODO(ver): uncomment once supported by Storj
-	// putVersioningInput := &s3.PutBucketVersioningInput{
-	// 	Bucket: aws.String(bucket),
-	// 	VersioningConfiguration: &s3.VersioningConfiguration{
-	// 		Status: aws.String("Enabled"),
-	// 	},
-	// }
+	putVersioningInput := &s3.PutBucketVersioningInput{
+		Bucket: aws.String(bucket),
+		VersioningConfiguration: &s3.VersioningConfiguration{
+			Status: aws.String("Enabled"),
+		},
+	}
 
-	// _, err = s3Client.PutBucketVersioning(putVersioningInput)
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
-	// 		ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
-	// 		return
-	// 	}
-	// 	failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
-	// 	return
-	// }
+	_, err = s3Client.PutBucketVersioning(putVersioningInput)
+	if err != nil {
+		if strings.Contains(err.Error(), "NotImplemented: A header you provided implies functionality that is not implemented") {
+			ignoreLog(function, args, startTime, "Versioning is not implemented").Info()
+			return
+		}
+		failureLog(function, args, startTime, "", "Put versioning failed", err).Fatal()
+		return
+	}
 
 	for i := 0; i < 10; i++ {
 		putInput1 := &s3.PutObjectInput{
