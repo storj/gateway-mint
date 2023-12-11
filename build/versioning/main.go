@@ -124,7 +124,8 @@ func main() {
 	// TODO(ver): uncomment once supported by Storj
 	// testListObjectVersionsKeysContinuation()
 	// testListObjectVersionsVersionIDContinuation()
-	// testListObjectsVersionsWithEmptyDirObject()
+	testListObjectsVersionsWithEmptyDirObject()
+	// TODO(ver): uncomment once supported by Storj
 	// testTagging()
 	// testLockingLegalhold()
 	// testPutGetRetentionCompliance()
