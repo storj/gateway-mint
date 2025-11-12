@@ -15,11 +15,7 @@
 #  limitations under the License.
 #
 
-MINIO_PY_VERSION=$(curl --retry 10 -Ls -o /dev/null -w "%{url_effective}" https://github.com/minio/minio-py/releases/latest | sed "s/https:\/\/github.com\/minio\/minio-py\/releases\/tag\///")
-if [ -z "$MINIO_PY_VERSION" ]; then
-	echo "unable to get minio-py version from github"
-	exit 1
-fi
+MINIO_PY_VERSION="7.2.0"
 
 test_run_dir="$MINT_RUN_CORE_DIR/minio-py"
 pip3 install --user faker

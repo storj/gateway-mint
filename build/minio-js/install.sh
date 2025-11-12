@@ -18,6 +18,8 @@
 # Checkout at /mint/test-run/minio-js/
 # During run of the test copy it to the the /min/run/core/minio-js/minio-js
 
+MINIO_JS_VERSION="8.0.6"
+
 install_path="./test-run/minio-js/"
 rm -rf $install_path
 
@@ -25,14 +27,9 @@ git clone https://github.com/minio/minio-js.git $install_path
 
 cd $install_path || exit 0
 
-# Get new tags from remote
+echo "Using minio-js RELEASE $MINIO_JS_VERSION"
+
 git fetch --tags
-# Get latest tag name
-# shellcheck disable=SC2046
-LATEST=$(git describe --tags $(git rev-list --tags --max-count=1))
-
-echo "Using minio-js RELEASE $LATEST"
-
-git checkout "${LATEST}" --force &>/dev/null
+git checkout "tags/${MINIO_JS_VERSION}" --force &>/dev/null
 
 npm install --quiet &>/dev/null

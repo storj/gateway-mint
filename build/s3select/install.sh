@@ -15,4 +15,6 @@
 #  limitations under the License.
 #
 
-python -m pip install minio
+MINIO_PY_VERSION="7.2.0"
+
+python -m pip install minio=="${MINIO_PY_VERSION}"

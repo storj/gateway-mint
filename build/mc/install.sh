@@ -15,11 +15,7 @@
 #  limitations under the License.
 #
 
-MC_VERSION=$(curl --retry 10 -Ls -o /dev/null -w "%{url_effective}" https://github.com/minio/mc/releases/latest | sed "s/https:\/\/github.com\/minio\/mc\/releases\/tag\///")
-if [ -z "$MC_VERSION" ]; then
-	echo "unable to get mc version from github"
-	exit 1
-fi
+MC_VERSION="RELEASE.2025-08-13T08-35-41Z"
 
 test_run_dir="$MINT_RUN_CORE_DIR/mc"
 $WGET --output-document="${test_run_dir}/mc" "https://dl.minio.io/client/mc/release/linux-amd64/mc.${MC_VERSION}"

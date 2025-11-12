@@ -17,14 +17,28 @@ ci-image-build:
 
 .PHONY: ci-image-run
 ci-image-run:
-	# Every Makefile rule is run in its shell, so we need to couple these two so
+	# Every Makefile rule is run in its shell, so we need to couple these commands so
 	# exported credentials are visible to the `docker run ...` command.
-	export $$(docker run --network gateway-mint-network-$$BUILD_NUMBER --rm storjlabs/authservice:dev register --address drpc://authservice:20002 --format-env $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS)) && \
+	GATEWAY_ACCESS=$$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env GATEWAY_0_ACCESS 2>&1); \
+	exit_code=$$?; \
+	if [ $$exit_code -ne 0 ]; then \
+		echo "Failed to get gateway access (exit code $$exit_code): $$GATEWAY_ACCESS"; \
+		exit $$exit_code; \
+	fi; \
+	CREDS=$$(docker run \
+		--network gateway-mint-network-$$BUILD_NUMBER \
+		--rm storjlabs/authservice:dev register \
+		--address drpc://authservice:20002 \
+		--format-env "$$GATEWAY_ACCESS"); \
+	export $$CREDS; \
 	docker run \
-	--network gateway-mint-network-$$BUILD_NUMBER \
-	-e "SERVER_ENDPOINT=gateway:20010" -e "ACCESS_KEY=$$AWS_ACCESS_KEY_ID" -e "SECRET_KEY=$$AWS_SECRET_ACCESS_KEY" -e "ENABLE_HTTPS=0" \
-	--name gateway-mint-mint-$$BUILD_NUMBER \
-	--rm storjlabs/gateway-mint:latest
+		--network gateway-mint-network-$$BUILD_NUMBER \
+		-e "SERVER_ENDPOINT=gateway:20010" \
+		-e "ACCESS_KEY=$$AWS_ACCESS_KEY_ID" \
+		-e "SECRET_KEY=$$AWS_SECRET_ACCESS_KEY" \
+		-e "ENABLE_HTTPS=0" \
+		--name gateway-mint-mint-$$BUILD_NUMBER \
+		--rm storjlabs/gateway-mint:latest
 
 .PHONY: ci-image-clean
 ci-image-clean:
@@ -71,7 +85,8 @@ ci-dependencies-start:
 		--allowed-satellites $$(docker exec gateway-mint-sim-$$BUILD_NUMBER storj-sim network env SATELLITE_0_URL) \
 		--auth-token super-secret \
 		--endpoint http://gateway:20010 \
-		--kv-backend memory://
+		--kv-backend badger:// \
+		--node.first-start
 
 	docker run \
 	--network gateway-mint-network-$$BUILD_NUMBER --network-alias gateway \
