@@ -324,20 +324,21 @@ class AwsSdkRubyTest
     raise e
   end
 
-  def presignedPut(bucket_name, file_name)
-    # Returns put url
+  def presignedPut(bucket_name, file_name, acl)
+    # Returns presigned PUT URL and the headers required to be included in the request
     obj = @@s3.bucket(bucket_name).object(file_name)
-    return obj.presigned_url(:put, expires_in: 600)
+    return obj.presigned_request(:put, expires_in: 600, acl: acl)
   rescue => e
     raise e
   end
 
-  def presignedPutWrapper(bucket_name, file_name, log_output)
-    presignedPut(bucket_name, file_name)
+  def presignedPutWrapper(bucket_name, file_name, acl, log_output)
+    presignedPut(bucket_name, file_name, acl)
   rescue => e
     log_output[:function] = 'presignedPut(bucket_name, file_name)'
     log_output[:args] = {'bucket_name': bucket_name,
-                         'file_name': file_name}
+                         'file_name': file_name,
+                         'acl': acl}
    raise e
   end
 
@@ -708,6 +709,7 @@ class AwsSdkRubyTest
   def presignedPutObjectTest(data_dir, file_name)
     # Tests presignedPutObject api command
 
+    acl = 'public-read'
     # get random bucket name
     bucket_name = random_bucket_name
     # Initialize hash table, 'log_output'
@@ -727,9 +729,9 @@ class AwsSdkRubyTest
       cksum_orig = `cksum #{file}`.split[0..1]
 
       # Generate presigned Put URL and parse it
-      uri = URI.parse(presignedPutWrapper(bucket_name, file_name, log_output))
-      request = Net::HTTP::Put.new(uri.request_uri, 'content-type' => 'application/octet-stream',
-                                   'x-amz-acl' => 'public-read')
+      presigned_url, headers = presignedPutWrapper(bucket_name, file_name, acl, log_output)
+      uri = URI.parse(presigned_url)
+      request = Net::HTTP::Put.new(uri.request_uri, headers.merge({'content-type' => 'application/octet-stream'}))
       request.body = IO.read(File.join(data_dir, file_name))
 
       http = Net::HTTP.new(uri.host, uri.port)
